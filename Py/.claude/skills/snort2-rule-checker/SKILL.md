@@ -114,6 +114,7 @@ Performance improvements to suggest:
 5. Add `depth`/`offset` if the pattern appears at a known position
 6. Replace `flags:A+` with `flow:established` (more efficient with stream5)
 7. Replace broad IP variables (`$HOME_NET`) with specific server variables (`$HTTP_SERVERS`) when appropriate
+8. `gid:1` — 기본값이므로 생략 가능하지만, FMC 등 관리 플랫폼 환경에서는 명시적으로 유지하는 것이 관행. 제거는 선택사항
 
 ---
 
@@ -183,6 +184,7 @@ alert tcp ... (... sid:1001331; ...)
 | `dsize` on stream rule | Never matches | Add `flow:no_stream` |
 | `replace` length mismatch | Runtime error | Match content and replace string lengths exactly |
 | PCRE without content pre-filter | High CPU on all packets | Add `content` before `pcre` |
+| `gid:1` present | Optional — default value, redundant in pure Snort; keep for FMC-managed environments |
 
 ---
 
