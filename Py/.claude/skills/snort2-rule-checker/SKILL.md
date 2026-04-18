@@ -21,7 +21,7 @@ action proto src_ip src_port direction dst_ip dst_port (option1; option2; option
 
 **Minimal valid rule:**
 ```
-alert tcp any any -> any any (msg:"Test"; sid:1000001; rev:1;)
+alert tcp any any -> any any (msg:"Test"; sid:1000001; rev:1; gid:1;)
 ```
 
 **Typical well-formed rule:**
@@ -33,7 +33,7 @@ alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (
   content:"SELECT"; nocase; distance:0;
   pcre:"/UNION\s+SELECT\s+.+FROM/i";
   classtype:web-application-attack;
-  sid:1000002; rev:1;
+  sid:1000002; rev:1; gid:1;
 )
 ```
 
@@ -145,18 +145,19 @@ When writing corrected rules to a file:
 1. **Sort by SID ascending** — rules must be ordered from lowest to highest `sid` value
 2. **One blank line between each rule** — every rule is separated by exactly one empty line
 3. **No comments** — output must be pure ASCII, no `#` comment lines (management systems reject non-rule lines)
+4. **Options tail order** — the last three options of every rule MUST be `sid:N; rev:N; gid:N;` in exactly that order
 
 **Example correct output format:**
 ```
-alert tcp ... (... sid:1000418; ...)
+alert tcp ... (msg:"..."; flow:...; content:"..."; classtype:...; sid:1000418; rev:1; gid:1;)
 
-alert tcp ... (... sid:1000419; ...)
+alert tcp ... (msg:"..."; flow:...; content:"..."; classtype:...; sid:1000419; rev:1; gid:1;)
 
-alert tcp ... (... sid:1000796; ...)
+alert tcp ... (msg:"..."; flow:...; content:"..."; classtype:...; sid:1000796; rev:1; gid:1;)
 
-alert tcp ... (... sid:1000972; ...)
+alert tcp ... (msg:"..."; flow:...; content:"..."; classtype:...; sid:1000972; rev:1; gid:1;)
 
-alert tcp ... (... sid:1001331; ...)
+alert tcp ... (msg:"..."; flow:...; content:"..."; classtype:...; sid:1001331; rev:1; gid:1;)
 ```
 
 ---
@@ -228,6 +229,6 @@ alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (
   content:"SELECT"; nocase; distance:0; within:20; http_client_body;
   pcre:"/UNION\s+SELECT\s+.{0,200}FROM/iPB";
   classtype:web-application-attack;
-  sid:9999; rev:1;
+  sid:9999; rev:1; gid:1;
 )
 ```
